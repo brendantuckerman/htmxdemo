@@ -1,0 +1,11 @@
+<div id="htmxdemo-shipping-block-value" class="htmxdemo-shipping-calculator">
+  <span class="htmxdemo-shipping-calculator__label">{{ 'Shipping total:'|t }}</span>
+
+  {% if total %}
+    <span class="htmxdemo-shipping-calculator__total">{{ total }}</span>
+  {% else %}
+    <span class="htmxdemo-shipping-calculator__total htmxdemo-shipping-calculator__total--pending">
+      {{ 'Your shipping costs will appear here....'|t }}
+    </span>
+  {% endif %}
+</div>

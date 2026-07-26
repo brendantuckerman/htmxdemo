@@ -1,0 +1,18 @@
+{% if available %}
+  <p>Yes, we offer deliveries to {{ postcode }}.</p>
+  <input type="submit" id="htmxdemo-next" name="op" value="Next"
+         class="button js-form-submit form-submit" data-hx-swap-oob="outerHTML">
+{% else %}
+
+  {% if postcode == '' %}
+    <input type="submit" id="htmxdemo-next" name="op" value="Next" disabled
+         class="button js-form-submit form-submit" data-hx-swap-oob="outerHTML">
+  {% else %}
+    <p>Sorry--delivery is not available to {{ postcode }}.</p>
+    <input type="submit" id="htmxdemo-next" name="op" value="Next" disabled
+         class="button js-form-submit form-submit" data-hx-swap-oob="outerHTML">
+
+  {% endif %}
+{% endif %}
+
+

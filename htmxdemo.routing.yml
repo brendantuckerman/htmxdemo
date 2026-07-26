@@ -1,0 +1,111 @@
+htmxdemo_links:
+  path: "/htmxdemo-links"
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: "HTMX Demo Examples"
+  requirements:
+    _permission: "access content"
+
+htmxdemo.foo:
+  path: "/htmxdemo/foo"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::foo'
+    _title: "Foo"
+  requirements:
+    _permission: "access content"
+
+htmxdemo.form:
+  path: "/htmxform"
+  defaults:
+    _title: "Htmx form"
+    _form: '\Drupal\htmxdemo\Form\HtmxdemoForm'
+  requirements:
+    _permission: "access content"
+
+htmxdemo.form_add_more:
+  path: "/htmxform/addmoreform"
+  defaults:
+    _title: "Add more form"
+    _form: '\Drupal\htmxdemo\Form\HtmxdemoAddMoreForm'
+  requirements:
+    _permission: "access content"
+
+htmxdemo.infinite_scroll:
+  path: "/htmxdemo/infinite-scroll"
+  defaults:
+    _title: "Htmx infinite scroll demo"
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoInfiniteScrollController::action'
+  requirements:
+    _permission: "access content"
+
+htmxdemo.infinite_scroll_node:
+  path: "/htmxdemo/infinite-scroll-node"
+  defaults:
+    _title: "Htmx infinite scroll + node demo"
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoInfiniteScrollNodeController::action'
+  requirements:
+    _permission: "access content"
+
+htmxdemo.add_more_nodes:
+  path: "/htmxdemo/add-more-nodes"
+  defaults:
+    _title: "Htmxdemo add more nodes"
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoAddMoreNodesController::action'
+  requirements:
+    _permission: "access content"
+
+htmxdemo.cascade_form:
+  path: "/htmxform/cascade"
+  defaults:
+    _title: "Htmx Cascade Form"
+    _form: '\Drupal\htmxdemo\Form\HtmxdemoCascadeForm'
+  requirements:
+    _permission: "access content"
+
+htmxdemo.postcode_lookup:
+  path: "/htmxform/postcodeLookup"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::postcodeLookup'
+    _title: "Htmx postcode loookup"
+    userPostcode: ""
+  requirements:
+    _permission: "access content"
+  options:
+    _htmx_route: TRUE
+
+htmxdemo.shipping_calculator:
+  path: "/htmxform/shippingCalculator"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::calculateShipping'
+    _title: "Htmx shipping calculator"
+    userPostcode: ""
+    userSelection: ""
+  requirements:
+    _permission: "access content"
+  options:
+    _htmx_route: TRUE
+
+htmxdemo.tabbed:
+  path: "/htmxdemo/tabbed"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoTabbedController::action'
+    _title: "Htmx demo tabbed example"
+  requirements:
+    _permission: "access content"
+
+htmxdemo.memory:
+  path: "/htmxdemo/memory"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoMemoryController::action'
+    _title: "Htmxdemo memory game"
+  requirements:
+    _permission: "access content"
+
+htmxdemo.wizard:
+  path: "/htmxform/wizard"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::wizard'
+  requirements:
+    _permission: "access content"
+  options:
+    _htmx_route: TRUE

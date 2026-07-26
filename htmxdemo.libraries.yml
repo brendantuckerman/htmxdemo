@@ -1,0 +1,8 @@
+htmxdemo:
+  css:
+    theme:
+      css/htmxdemo.css: {}
+memory:
+  css:
+    theme:
+      css/htmxdemo_memory.css: {}

@@ -1,0 +1,63 @@
+htmxdemo_links:
+  title: "HTMX demo - links"
+  parent: system.admin
+  description: "Examples of using HTMX in Drupal."
+  route_name: htmxdemo_links
+  weight: 1
+
+htmxdemo_basic:
+  title: "Basic example"
+  parent: htmxdemo_links
+  description: "Demonstrates a basic example of htmx swapping"
+  route_name: htmxdemo.foo
+  weight: 2
+
+# Htms basic twig helper
+htmxdemo_form:
+  title: "Htmxdemo form"
+  parent: htmxdemo_links
+  description: "A htmx driven form with a wizard and shipping calculation"
+  route_name: htmxdemo.form
+  weight: 3
+
+htmxdemo_form_add_more:
+  title: "Htmxdemo add more form"
+  parent: htmxdemo_links
+  description: "A htmx demo from to add more elements of the form"
+  route_name: htmxdemo.form_add_more
+  weight: 4
+
+htmxdemo_cascade_form:
+  title: "Cascade form"
+  parent: htmxdemo_links
+  description: "A form that cascades to show days on months"
+  route_name: htmxdemo.cascade_form
+  weight: 5
+
+htmxdemo_infinite_scroll:
+  title: "Infinite Scroll"
+  parent: htmxdemo_links
+  description: "Demonstrates a controller that shows infinite scrolling."
+  route_name: htmxdemo.infinite_scroll
+  weight: 6
+
+htmxdemo_infinite_scroll_node:
+  title: "Infinite Scroll with nodes"
+  parent: htmxdemo_links
+  description: "Demonstrates a controller that shows infinite scrolling with nodes."
+  route_name: htmxdemo.infinite_scroll_node
+  weight: 7
+
+htmxdemo_tabbed:
+  title: "Htmx Tabbed"
+  parent: htmxdemo_links
+  description: "Demonstrates a controller that uses htmx tabs"
+  route_name: htmxdemo.tabbed
+  weight: 8
+
+htmxdemo_memory:
+  title: "HtmemoryX"
+  parent: htmxdemo_links
+  description: "Demonstrates a HTMX version of the game memory."
+  route_name: htmxdemo.memory
+  weight: 9

@@ -1,0 +1,87 @@
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(90px);
+  }
+}
+
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-90px);
+  }
+}
+
+/* define animations for the old and new content */
+::view-transition-old(slide-it) {
+  animation:
+    180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+::view-transition-new(slide-it) {
+  animation:
+    420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+}
+
+/* tie the view transition to a given CSS class */
+.htmxdemo-form-wrapper {
+  view-transition-name: slide-it;
+}
+
+/*
+ * Loading indicators.
+ *
+ * htmx adds the .htmx-request class to whatever element hx-indicator points
+ * at for the lifetime of the request; everything below is plain CSS reacting
+ * to that class appearing and disappearing.
+ */
+@keyframes htmxdemo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner next to the wizard buttons, revealed during navigation POSTs. */
+.htmxdemo-spinner {
+  display: inline-block;
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin-inline-start: 0.5rem;
+  vertical-align: middle;
+  border: 2px solid currentColor;
+  border-block-start-color: transparent;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+  animation: htmxdemo-spin 700ms linear infinite;
+}
+.htmxdemo-spinner.htmx-request {
+  opacity: 1;
+}
+
+/* The postcode lookup names its own swap target as the indicator: dim any
+   stale result and show a spinner while the fresh one is fetched. */
+#postcode-result.htmx-request > * {
+  opacity: 0.4;
+}
+#postcode-result.htmx-request::after {
+  content: "";
+  display: inline-block;
+  inline-size: 1rem;
+  block-size: 1rem;
+  border: 2px solid currentColor;
+  border-block-start-color: transparent;
+  border-radius: 50%;
+  animation: htmxdemo-spin 700ms linear infinite;
+}

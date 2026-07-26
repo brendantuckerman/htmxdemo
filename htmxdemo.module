@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * Implements hook_theme()
+ */
+
+function htmxdemo_theme(): array {
+  return [
+    'htmxdemo_foo' => [
+      'variables' => [],
+    ],
+    'htmxdemo_bar' => [
+      'variables' => [],
+    ],
+    'htmxdemo_postcode_result' => [
+      'variables' => [
+        'title' => 'Serviced area check',
+         'available' => FALSE,
+        'postcode' => '',
+      ]
+    ],
+    'htmxdemo_wizard' => [
+      'variables' => [
+
+      ]
+    ],
+    'htmxdemo_shipping_calculator' => [
+      'variables' => [
+        'total' => NULL,
+      ],
+    ],
+  ];
+}

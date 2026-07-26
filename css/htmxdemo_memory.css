@@ -1,0 +1,21 @@
+/* Memory */
+ul:has(li .htmxdemo-memory-tiles) {
+  border: 2px solid salmon;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+
+  li {
+    list-style: none;
+    height: 100px;
+    width: 80px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-shadow: 8px 3px 15px -1px rgba(0, 0, 0, 0.76);
+    box-shadow: 8px 3px 15px -1px rgba(0, 0, 0, 0.76);
+  }
+}
