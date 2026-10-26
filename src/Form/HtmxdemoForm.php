@@ -132,8 +132,6 @@ class HtmxdemoForm extends FormBase {
       ->select('#htmxdemo-wizard-form')
       ->selectOob('#htmxdemo-page-indicator')
       ->target('#htmxdemo-wizard-form')
-      // Stop the postcode field's own hx-get from inheriting these.
-      ->disinherit('hx-select hx-select-oob')
       ->indicator('#htmxdemo-form-busy')
       ->swap('outerHTML', 'transition:true')
       ->applyTo($form);

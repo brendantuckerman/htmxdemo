@@ -9,7 +9,6 @@ use Drupal\Core\Htmx\Htmx;
 use Drupal\Core\Htmx\HtmxRequestInfoTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
 // @see https://github.com/hashbangcode/drupal_htmx_examples/blob/main/src/Controller/TabbedController.php
 
 class HtmxdemoTabbedController extends ControllerBase {
@@ -38,19 +37,11 @@ class HtmxdemoTabbedController extends ControllerBase {
   protected $currentRouteMatch;
 
 
-  /**
-   * The database service.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $database;
-
   public static function create(ContainerInterface $container) {
     $instance = new self();
     $instance->requestStack = $container->get('request_stack');
     $instance->htmxRenderer = $container->get('main_content_renderer.htmx');
     $instance->currentRouteMatch = $container->get('current_route_match');
-    $instance->database = $container->get('database');
     return $instance;
   }
 
@@ -72,6 +63,13 @@ class HtmxdemoTabbedController extends ControllerBase {
       $number = str_replace('page_', '', $trigger);
 
       $node = $this->loadNthNode($number);
+      if (!$node) {
+        return $this->htmxRenderer->renderResponse(
+          $this->buildEmpty(),
+          $this->requestStack->getCurrentRequest(),
+          $this->currentRouteMatch
+        );
+      }
 
       $viewBuilder = $this->entityTypeManager()->getViewBuilder('node');
       $renderArray = $viewBuilder->view($node, 'teaser');
@@ -88,8 +86,8 @@ class HtmxdemoTabbedController extends ControllerBase {
 
       $output['#cache'] = [
         'contexts' => [
-          'url:path',
-          'url:path:query'
+          'url.path',
+          'url.query_args'
         ],
         'tags' => $node->getCacheTags(),
       ];
@@ -131,10 +129,15 @@ class HtmxdemoTabbedController extends ControllerBase {
       '#title' => 'Links',
       '#items' => $items,
       '#type' => 'ul',
+      '#attributes' => ['class' => ['htmxdemo-tabs']],
+      '#attached' => ['library' => ['htmxdemo/tabs']],
     ];
 
     //Load the 1st node i db
     $node = $this->loadNthNode(1);
+    if (!$node) {
+      return $output + $this->buildEmpty();
+    }
 
     // Convert the node to a render array for the view mode "teaser".
     $viewBuilder = $this->entityTypeManager()->getViewBuilder('node');
@@ -153,8 +156,8 @@ class HtmxdemoTabbedController extends ControllerBase {
     // Set up the cache for this request.
     $output['#cache'] = [
       'contexts' => [
-        'url:path',
-        'url:path.query',
+        'url.path',
+        'url.query_args'
       ],
       'tags' => $node->getCacheTags(),
     ];
@@ -176,19 +179,34 @@ class HtmxdemoTabbedController extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function loadNthNode(int $nth): ?EntityInterface {
-    $query = $this->database->select('node', 'n')->fields('n', ['nid']);
-    $query->join('node_field_data', 'nfd', '[nfd].[nid] = [n].[nid] AND [nfd].[langcode] = [n].[langcode]');
-    $query->orderBy('nfd.created', 'desc');
-    $query->where('n.type = :type', [':type' => 'article']);
-    $query->where('nfd.status = 1');
-    $query->range($nth, 1);
-    $nid = $query->execute()->fetchField();
-
-     // Then we load the data accordingly.
     $nodeStorage = $this->entityTypeManager()->getStorage('node');
-    return $nodeStorage->load($nid);
+    $nids = $nodeStorage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'article')
+      ->condition('status', 1)
+      ->sort('created', 'DESC')
+      ->range($nth - 1, 1)
+      ->execute();
+
+    // Then we load the data accordingly.
+    return $nids ? $nodeStorage->load(reset($nids)) : NULL;
   }
 
-
-
+  /**
+   * Builds the render array shown when there is no content to display.
+   */
+  protected function buildEmpty(): array {
+    return [
+      'tab_content' => [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $this->t('No articles found. Create some article content to see this demo.'),
+        '#attributes' => ['id' => 'detail'],
+      ],
+      '#cache' => [
+        'contexts' => ['url.path', 'url.query_args'],
+        'tags' => ['node_list'],
+      ],
+    ];
+  }
 }

@@ -55,9 +55,9 @@ htmxdemo_tabbed:
   route_name: htmxdemo.tabbed
   weight: 8
 
-htmxdemo_memory:
-  title: "HtmemoryX"
+htmxdemo_form_checkbox:
+  title: "Htmxdemo checkbox form with hx-partials"
   parent: htmxdemo_links
-  description: "Demonstrates a HTMX version of the game memory."
-  route_name: htmxdemo.memory
+  description: "A htmx driven form uing partials in htmx 4"
+  route_name: htmxdemo.form_checkboxes
   weight: 9

@@ -30,6 +30,14 @@ htmxdemo.form_add_more:
   requirements:
     _permission: "access content"
 
+htmxdemo.form_checkboxes:
+  path: "/htmxform/checkboxform"
+  defaults:
+    _title: "Checkbox form"
+    _form: '\Drupal\htmxdemo\Form\HtmxdemoCheckboxForm'
+  requirements:
+    _permission: "access content"
+
 htmxdemo.infinite_scroll:
   path: "/htmxdemo/infinite-scroll"
   defaults:
