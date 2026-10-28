@@ -36,15 +36,27 @@ class HtmxDemoController extends ControllerBase {
     return $this->requestStack->getCurrentRequest();
   }
 
-  public function foo(): array {
-
-    if($this->isHtmxRequest()) {
-      return ['#theme' => 'htmxdemo_bar'];
-    }
+  public function basic(): array {
 
     return [
-      '#theme' => 'htmxdemo_foo',
+      '#theme' => 'htmxdemo_basic',
     ];
+  }
+
+  public function basicResponse() {
+    return [ '#theme' => 'htmxdemo_basic_response' ];
+  }
+
+  public function drupalBasic() {
+    return [
+      '#theme' => 'htmxdemo_drupal_basic',
+    ];
+  }
+
+  public function drupalBasicResponse() {
+      $random = random_int(0, 100);
+
+      return $random;
   }
 
   public function postcodeLookup(Request $request): array {

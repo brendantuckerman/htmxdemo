@@ -9,8 +9,15 @@ htmxdemo_basic:
   title: "Basic example"
   parent: htmxdemo_links
   description: "Demonstrates a basic example of htmx swapping"
-  route_name: htmxdemo.foo
+  route_name: htmxdemo.basic
   weight: 2
+
+htmxdemo_drupal_basic:
+  title: "Basic Drupal example"
+  parent: htmxdemo_links
+  description: "Demonstrates a slightly more advanced example"
+  route_name: htmxdemo.drupal_basic
+  weight: 3
 
 # Htms basic twig helper
 htmxdemo_form:
@@ -18,46 +25,46 @@ htmxdemo_form:
   parent: htmxdemo_links
   description: "A htmx driven form with a wizard and shipping calculation"
   route_name: htmxdemo.form
-  weight: 3
+  weight: 4
 
 htmxdemo_form_add_more:
   title: "Htmxdemo add more form"
   parent: htmxdemo_links
   description: "A htmx demo from to add more elements of the form"
   route_name: htmxdemo.form_add_more
-  weight: 4
+  weight: 5
 
 htmxdemo_cascade_form:
   title: "Cascade form"
   parent: htmxdemo_links
   description: "A form that cascades to show days on months"
   route_name: htmxdemo.cascade_form
-  weight: 5
+  weight: 6
 
 htmxdemo_infinite_scroll:
   title: "Infinite Scroll"
   parent: htmxdemo_links
   description: "Demonstrates a controller that shows infinite scrolling."
   route_name: htmxdemo.infinite_scroll
-  weight: 6
+  weight: 7
 
 htmxdemo_infinite_scroll_node:
   title: "Infinite Scroll with nodes"
   parent: htmxdemo_links
   description: "Demonstrates a controller that shows infinite scrolling with nodes."
   route_name: htmxdemo.infinite_scroll_node
-  weight: 7
+  weight: 8
 
 htmxdemo_tabbed:
   title: "Htmx Tabbed"
   parent: htmxdemo_links
   description: "Demonstrates a controller that uses htmx tabs"
   route_name: htmxdemo.tabbed
-  weight: 8
+  weight: 9
 
 htmxdemo_form_checkbox:
   title: "Htmxdemo checkbox form with hx-partials"
   parent: htmxdemo_links
   description: "A htmx driven form uing partials in htmx 4"
   route_name: htmxdemo.form_checkboxes
-  weight: 9
+  weight: 10

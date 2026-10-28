@@ -6,13 +6,34 @@ htmxdemo_links:
   requirements:
     _permission: "access content"
 
-htmxdemo.foo:
-  path: "/htmxdemo/foo"
+htmxdemo.basic:
+  path: "/htmxdemo/basic"
   defaults:
-    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::foo'
-    _title: "Foo"
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::basic'
+    _title: "Basic"
   requirements:
     _permission: "access content"
+  options:
+    _htmx_route: TRUE
+
+htmxdemo.basic_response:
+  path: "/htmxdemo/basic/response"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::basicResponse'
+  requirements:
+    _permission: "access content"
+  options:
+    _htmx_route: TRUE
+
+htmxdemo.drupal_basic:
+  path: "/htmxdemo/basic/drupal"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::drupalBasic'
+    _title: "A basic Drupal version"
+  requirements:
+    _permission: "access content"
+  options:
+    _htmx_route: TRUE
 
 htmxdemo.form:
   path: "/htmxform"
@@ -76,6 +97,25 @@ htmxdemo.postcode_lookup:
     _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::postcodeLookup'
     _title: "Htmx postcode loookup"
     userPostcode: ""
+  requirements:
+    _permission: "access content"
+  options:
+    _htmx_route: TRUE
+
+htmxdemo.query_search_form:
+  path: "/htmxdemo/query-search"
+  defaults:
+    _title: "Query search"
+    _form: '\Drupal\htmxdemo\Form\HtmxdemoQuerySearchForm'
+  requirements:
+    _permission: "access content"
+
+htmxdemo.search_route:
+  path: "/htmxdemo/search"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoSearchController::search'
+    _title: "Search"
+  methods: [GET, QUERY]
   requirements:
     _permission: "access content"
   options:

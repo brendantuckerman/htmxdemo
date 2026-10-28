@@ -153,9 +153,7 @@ class HtmxdemoForm extends FormBase {
     $url = Url::fromRoute('entity.node.canonical', ['node' => 1]);
 
     if ($this->isHtmxRequest()) {
-      // A background (XHR) request cannot navigate the browser; a normal
-      // redirect would be followed silently and swallowed by the swap. The
-      // HX-Redirect header tells htmx to perform the navigation itself.
+      //This needs review for htmx 4
       $htmx = new Htmx();
       $htmx->redirectHeader($url);
       $response = new Response();

@@ -1,0 +1,12 @@
+{{ attach_library('core/drupal.htmx')}}
+
+<button
+    data-hx-get="/htmxdemo/basic/response"
+    data-hx-trigger="click"
+    data-hx-target="#htmx-basic-target"
+    data-hx-swap="innerHTML"
+    data-hx-select="#htmx-basic-select"
+> Click me
+</button>
+
+<p><span id="htmx-basic-target">Update here...</span></p>

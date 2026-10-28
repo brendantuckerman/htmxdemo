@@ -6,11 +6,21 @@
 
 function htmxdemo_theme(): array {
   return [
-    'htmxdemo_foo' => [
+    'htmxdemo_basic' => [
       'variables' => [],
     ],
-    'htmxdemo_bar' => [
+    'htmxdemo_basic_response' => [
       'variables' => [],
+    ],
+    'htmxdemo_drupal_basic' => [
+      'variables' => [
+        'title' => 'Htmx powered random number'
+      ]
+    ],
+    'htmxdemo_drupal_basic_response' => [
+      'variables' => [
+        'randomInt' => NULL
+      ]
     ],
     'htmxdemo_postcode_result' => [
       'variables' => [
