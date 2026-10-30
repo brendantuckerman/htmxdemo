@@ -47,16 +47,18 @@ class HtmxDemoController extends ControllerBase {
     return [ '#theme' => 'htmxdemo_basic_response' ];
   }
 
-  public function drupalBasic() {
+  public function randomNumber() {
     return [
-      '#theme' => 'htmxdemo_drupal_basic',
+      '#theme' => 'htmxdemo_random_number',
+      '#attached' => ['library' => ['htmxdemo/htmxdemo']
+      ],
     ];
   }
 
-  public function drupalBasicResponse() {
-      $random = random_int(0, 100);
-
-      return $random;
+  public function randomResponse() {
+    return [
+      '#markup' => (string) random_int(0, 100),
+    ];
   }
 
   public function postcodeLookup(Request $request): array {

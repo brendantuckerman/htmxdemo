@@ -12,14 +12,10 @@ function htmxdemo_theme(): array {
     'htmxdemo_basic_response' => [
       'variables' => [],
     ],
-    'htmxdemo_drupal_basic' => [
+    'htmxdemo_random_number' => [
       'variables' => [
-        'title' => 'Htmx powered random number'
-      ]
-    ],
-    'htmxdemo_drupal_basic_response' => [
-      'variables' => [
-        'randomInt' => NULL
+        'title' => 'Htmx powered random number',
+        'random' => NULL
       ]
     ],
     'htmxdemo_postcode_result' => [

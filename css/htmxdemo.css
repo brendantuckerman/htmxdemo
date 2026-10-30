@@ -69,11 +69,10 @@
 .htmxdemo-spinner.htmx-request {
   opacity: 1;
 }
-
-/* The postcode lookup names its own swap target as the indicator: dim any
-   stale result and show a spinner while the fresh one is fetched. */
-#postcode-result.htmx-request > * {
-  opacity: 0.4;
+/* Dim while loading */
+#postcode-result.htmx-request > *,
+#htmx-random-target.htmx-swapping {
+  opacity: 0.3;
 }
 #postcode-result.htmx-request::after {
   content: "";

@@ -13,8 +13,6 @@ htmxdemo.basic:
     _title: "Basic"
   requirements:
     _permission: "access content"
-  options:
-    _htmx_route: TRUE
 
 htmxdemo.basic_response:
   path: "/htmxdemo/basic/response"
@@ -25,11 +23,19 @@ htmxdemo.basic_response:
   options:
     _htmx_route: TRUE
 
-htmxdemo.drupal_basic:
-  path: "/htmxdemo/basic/drupal"
+htmxdemo.random_number:
+  path: "/htmxdemo/random"
   defaults:
-    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::drupalBasic'
-    _title: "A basic Drupal version"
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::randomNumber'
+    _title: "A slightly more advanced example returning a random number"
+  requirements:
+    _permission: "access content"
+
+htmxdemo.random_number_response:
+  path: "/htmxdemo/random/response"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxDemoController::randomResponse'
+    _title: "Returns a random number"
   requirements:
     _permission: "access content"
   options:

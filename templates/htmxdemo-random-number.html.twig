@@ -1,0 +1,17 @@
+{{ attach_library('core/drupal.htmx')}}
+<p>Hover over me to get a <span
+    data-hx-get="/htmxdemo/random/response"
+    data-hx-trigger="mouseover delay:100ms"
+    data-hx-target="#htmx-random-target"
+    data-hx-swap="innerHTML swap:1s"
+    data-hx-sync="abort"
+    data-hx-indicator=".htmxdemo-spinner"
+> R A N D O M
+</span> response.</p>
+
+<img id="spinner" class="htmxdemo-spinner">
+
+<p><span id="htmx-random-target">Update here...</span></p>
+
+
+

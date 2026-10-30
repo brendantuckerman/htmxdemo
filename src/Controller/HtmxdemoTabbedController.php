@@ -116,12 +116,11 @@ class HtmxdemoTabbedController extends ControllerBase {
       ];
 
       (new Htmx())
-      ->get()
-      ->swap('outerHTML')
-      ->target('#detail')
-      ->trigger('click')
-      ->applyTo($items[$id]);
-
+        ->get()
+        ->swap('outerHTML')
+        ->target('#detail')
+        ->trigger('click')
+        ->applyTo($items[$id]);
     }
 
     $output['list_of_items'] = [

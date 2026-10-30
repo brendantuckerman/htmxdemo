@@ -12,11 +12,11 @@ htmxdemo_basic:
   route_name: htmxdemo.basic
   weight: 2
 
-htmxdemo_drupal_basic:
-  title: "Basic Drupal example"
+htmxdemo_random_number:
+  title: "Random number"
   parent: htmxdemo_links
   description: "Demonstrates a slightly more advanced example"
-  route_name: htmxdemo.drupal_basic
+  route_name: htmxdemo.random_number
   weight: 3
 
 # Htms basic twig helper
