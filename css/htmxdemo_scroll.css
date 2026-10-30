@@ -1,0 +1,76 @@
+.htmxdemo-scroll {
+  max-width: 48rem;
+}
+
+/*
+ * Snap the page scroll to the nearest card. The page scrolls on <html>, so
+ * snapping is set there, but only on pages that have the feed. Proximity
+ * snapping only settles when a card is close, so it doesn't fight the
+ * theme's sticky header or force the user through every card.
+ */
+html:has(.htmxdemo-scroll) {
+  scroll-snap-type: y proximity;
+}
+
+/* Each card fills the screen, so every scroll brings in a new one. */
+.htmxdemo-scroll__card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  scroll-snap-align: center;
+}
+
+/* Keep room for the title and summary within the screen. */
+.htmxdemo-scroll img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 50svh;
+  object-fit: cover;
+}
+
+/*
+ * Cards slide in as each one is swapped into the page, alternating from the
+ * left and the right. The loader is always the last child, so odd and even
+ * only count cards above it.
+ */
+.htmxdemo-scroll {
+  overflow-x: clip;
+}
+
+.htmxdemo-scroll__card:nth-child(odd) {
+  animation: htmxdemo-scroll-from-left 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.htmxdemo-scroll__card:nth-child(even) {
+  animation: htmxdemo-scroll-from-right 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/*
+ * The loader is invisible. It only needs height, so it can scroll into view
+ * and trigger the next batch.
+ */
+.htmxdemo-scroll__loader {
+  min-height: 12rem;
+  background: transparent;
+}
+
+@keyframes htmxdemo-scroll-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+}
+
+@keyframes htmxdemo-scroll-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .htmxdemo-scroll__card {
+    animation: none;
+  }
+}

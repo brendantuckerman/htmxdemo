@@ -70,10 +70,17 @@ htmxdemo_form_checkbox:
   weight: 10
 
 htmxdemo_boost:
-  title: "Boost & Dynamic content"
+  title: "Boosted navigation"
   parent: htmxdemo_links
-  description: "On scroll dynamic content loading"
+  description: "Ordinary links between ordinary pages, made SPA-like with hx-boost"
   route_name: htmxdemo.boost
+  weight: 11
+
+htmxdemo_scroll:
+  title: "Scroll-loaded feed"
+  parent: htmxdemo_links
+  description: "Articles that load and draw in as the page scrolls"
+  route_name: htmxdemo.scroll
   weight: 11
 
 htmxdemo_dashboard:

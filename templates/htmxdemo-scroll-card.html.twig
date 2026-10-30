@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * An article card, swapped in over its scroll placeholder.
+ * A feed card. It draws in when the batch it belongs to is swapped in.
  *
  * Available variables:
  * - title: The article title.
@@ -10,7 +10,7 @@
  * - summary: The rendered, trimmed body.
  */
 #}
-<article class="htmxdemo-boost__card htmxdemo-boost__card--loaded">
+<article class="htmxdemo-scroll__card">
   {{ image }}
   <h2><a href="{{ url }}">{{ title }}</a></h2>
   {{ summary }}

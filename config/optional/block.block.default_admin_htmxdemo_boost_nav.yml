@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - htmxdemo
+    - system
+  theme:
+    - default_admin
+id: default_admin_htmxdemo_boost_nav
+theme: default_admin
+region: pre_content
+weight: 10
+provider: null
+plugin: htmxdemo_boost_nav
+settings:
+  id: htmxdemo_boost_nav
+  label: 'Boosted navigation'
+  label_display: visible
+  provider: htmxdemo
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/htmxdemo/boost\r\n/node/*"

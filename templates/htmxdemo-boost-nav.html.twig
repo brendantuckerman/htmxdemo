@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * A boosted list of links to ordinary pages.
+ *
+ * The one attribute below is all boost needs. A click on any link inside the
+ * list fetches the linked page with fetch(), swaps its <body> content into
+ * this page's <body>, updates the title and pushes the URL. The pages
+ * themselves know nothing about htmx.
+ *
+ * The transition:true swap modifier runs the swap inside a view transition
+ * (document.startViewTransition()), so the browser cross-fades from the old
+ * page to the new one. Browsers without the View Transitions API swap
+ * without the animation.
+ *
+ * htmx 4 does not inherit attributes by default, so the :inherited suffix
+ * passes the attributes down to the links inside the list.
+ *
+ * Available variables:
+ * - links: The links, each with title, url and active.
+ */
+#}
+<ul class="htmxdemo-boost-nav"
+  data-hx-boost:inherited="true"
+  data-hx-swap:inherited="innerHTML transition:true">
+  {% for link in links %}
+    <li>
+      <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+    </li>
+  {% endfor %}
+</ul>

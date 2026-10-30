@@ -1,39 +1,14 @@
 {#
 /**
  * @file
- * One page of scroll-loaded article cards with boosted page links.
+ * The boost demo page.
  *
- * htmx 4 does not inherit attributes by default, so the boost settings on
- * the nav use the :inherited suffix to apply to the links inside it. A
- * boosted link fetches the full page, takes #htmxdemo-boost from it and swaps
- * it in for the current one. The URL is pushed to history.
- *
- * Available variables:
- * - cards: Placeholder elements, each loading an article card on scroll.
- * - page: The current page number.
- * - page_count: The total number of pages.
- * - previous_url: The previous page URL, or NULL on the first page.
- * - next_url: The next page URL, or NULL on the last page.
+ * The boosted links are in the htmxdemo_boost_nav block, which is placed on
+ * this page and on node pages.
  */
 #}
-<div id="htmxdemo-boost" class="htmxdemo-boost">
-  <p class="htmxdemo-boost__intro">{{ 'Cards load as they scroll into view.'|t }}</p>
-
-  <div class="htmxdemo-boost__grid">
-    {{ cards }}
-  </div>
-
-  <nav class="htmxdemo-boost__pager" aria-label="{{ 'Article pages'|t }}"
-    data-hx-boost:inherited="true"
-    data-hx-target:inherited="#htmxdemo-boost"
-    data-hx-select:inherited="#htmxdemo-boost"
-    data-hx-swap:inherited="outerHTML show:top showTarget:body">
-    {% if previous_url %}
-      <a href="{{ previous_url }}" rel="prev">{{ 'Previous'|t }}</a>
-    {% endif %}
-    <span>{{ 'Page @page of @count'|t({'@page': page, '@count': page_count}) }}</span>
-    {% if next_url %}
-      <a href="{{ next_url }}" rel="next">{{ 'Next'|t }}</a>
-    {% endif %}
-  </nav>
+<div class="htmxdemo-boost">
+  <p>{{ 'The links in the boosted navigation block go to ordinary article pages. None of those pages, or the server, does anything special for htmx.'|t }}</p>
+  <p>{{ 'With boost, a click fetches the page in the background and swaps in its body. The URL and title update, and Back and Forward work. The browser does not reload the page, its CSS or its JavaScript.'|t }}</p>
+  <p>{{ 'To see the difference, open your browser developer tools on the Network tab and click a link. A boosted click is a single fetch request with an HX-Boosted header. Without JavaScript, the same links are plain page loads.'|t }}</p>
 </div>

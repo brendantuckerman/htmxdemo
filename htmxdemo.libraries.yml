@@ -16,6 +16,12 @@ boost:
       css/htmxdemo_boost.css: {}
   dependencies:
     - core/drupal.htmx
+scroll:
+  css:
+    theme:
+      css/htmxdemo_scroll.css: {}
+  dependencies:
+    - core/drupal.htmx
 
 alpine:
   version: 3.17.5

@@ -225,25 +225,27 @@ htmxdemo.dashboard.sort:
     no_cache: TRUE
 
 htmxdemo.boost:
-  path: "/htmxdemo/boost/{page}"
+  path: "/htmxdemo/boost"
   defaults:
-    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoBoostController::action'
-    _title: "Boost & Dynamic content"
-    page: 1
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoBoostController::page'
+    _title: "Boosted navigation"
   requirements:
     _permission: "access content"
-    page: '\d+'
 
-htmxdemo.boost_card:
-  path: "/htmxdemo/boost/card/{node}"
+htmxdemo.scroll:
+  path: "/htmxdemo/scroll"
   defaults:
-    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoBoostController::card'
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoScrollController::page'
+    _title: "Scroll-loaded feed"
   requirements:
-    _entity_access: "node.view"
+    _permission: "access content"
+
+htmxdemo.scroll_feed:
+  path: "/htmxdemo/scroll/feed"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoScrollController::feed'
+  requirements:
+    _permission: "access content"
   options:
     _htmx_route: TRUE
-    parameters:
-      node:
-        type: entity:node
-        bundle:
-          - article
+    no_cache: TRUE
