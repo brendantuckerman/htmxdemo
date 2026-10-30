@@ -12,6 +12,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Htmx\Htmx;
 use Drupal\Core\Link;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Session\AccountInterface;
@@ -19,17 +20,22 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\htmxdemo\Attribute\DashboardCard;
 use Drupal\htmxdemo\DashboardCardBase;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Shows the latest database log entries.
+ * Shows the latest database log entries, filterable by severity.
  *
  * This card shows per-card access control: it only appears for accounts with
  * the 'access site reports' permission, and only when dblog is enabled.
+ *
+ * The filter chips request the whole card body but hx-select swaps only the
+ * list. The URL in the address bar never changes: htmx does not push URLs
+ * unless asked to with hx-push-url.
  */
 #[DashboardCard(
   id: 'recent_logs',
   label: new TranslatableMarkup('Recent log messages'),
-  description: new TranslatableMarkup('The latest entries from the database log.'),
+  description: new TranslatableMarkup('The latest entries from the database log, by severity.'),
   size: 'wide',
   refreshOnContentChange: TRUE,
 )]
@@ -55,6 +61,8 @@ class RecentLogs extends DashboardCardBase {
    *   The module handler.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The date formatter.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
    */
   public function __construct(
     array $configuration,
@@ -63,6 +71,7 @@ class RecentLogs extends DashboardCardBase {
     protected readonly Connection $database,
     protected readonly ModuleHandlerInterface $moduleHandler,
     protected readonly DateFormatterInterface $dateFormatter,
+    protected readonly RequestStack $requestStack,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -79,21 +88,109 @@ class RecentLogs extends DashboardCardBase {
    * {@inheritdoc}
    */
   public function build(string $uuid): array {
-    $rows = $this->database->select('watchdog', 'w')
-      ->fields('w', ['wid', 'type', 'message', 'variables', 'severity', 'timestamp'])
-      ->orderBy('wid', 'DESC')
-      ->range(0, self::LIMIT)
-      ->execute()
-      ->fetchAll();
+    $filters = $this->getFilters();
+    $filter = (string) $this->requestStack->getCurrentRequest()?->query->get('severity', '');
+    $filter = isset($filters[$filter]) ? $filter : '';
+    $list_id = self::cardElementId($uuid) . '-logs';
 
-    // Log entries carry no cache tags, so always read them fresh.
-    $cache = ['max-age' => 0];
+    $build = [
+      // Alpine tracks the pressed chip in the browser, as only the list is
+      // swapped and the chips are never re-rendered.
+      'chips' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['htmxdemo-chips'],
+          'role' => 'group',
+          'aria-label' => $this->t('Filter by severity'),
+          'x-data' => '{ active: ' . json_encode($filter) . ' }',
+        ],
+      ],
+      'list' => [
+        '#type' => 'container',
+        '#attributes' => ['id' => $list_id, 'class' => ['htmxdemo-logs']],
+        'items' => $this->buildList($filters[$filter]['levels']),
+      ],
+      // Log entries carry no cache tags, so always read them fresh.
+      '#cache' => ['max-age' => 0],
+    ];
 
-    if (!$rows) {
-      return $this->buildEmpty($this->t('The log is empty.')) + ['#cache' => $cache];
+    foreach ($filters as $key => $definition) {
+      $chip = [
+        '#type' => 'html_tag',
+        '#tag' => 'button',
+        '#value' => $definition['label'],
+        '#attributes' => [
+          'type' => 'button',
+          'class' => ['htmxdemo-chip'],
+          'x-on:click' => 'active = ' . json_encode($key),
+          'x-bind:aria-pressed' => 'active === ' . json_encode($key),
+          'aria-pressed' => $key === $filter ? 'true' : 'false',
+        ],
+      ];
+      (new Htmx())
+        ->get($this->bodyUrl($uuid))
+        ->vals(['severity' => $key])
+        ->target('#' . $list_id)
+        ->select('#' . $list_id)
+        ->swap('outerHTML')
+        ->applyTo($chip);
+      $build['chips'][$key ?: 'all'] = $chip;
     }
 
-    $levels = RfcLogLevel::getLevels();
+    return $build;
+  }
+
+  /**
+   * Returns the severity filters.
+   *
+   * @return array<string, array{label: \Stringable, levels: int[]}>
+   *   Filters keyed by query value. The empty key shows every level.
+   */
+  protected function getFilters(): array {
+    return [
+      '' => [
+        'label' => $this->t('All'),
+        'levels' => [],
+      ],
+      'error' => [
+        'label' => $this->t('Errors'),
+        'levels' => [RfcLogLevel::EMERGENCY, RfcLogLevel::ALERT, RfcLogLevel::CRITICAL, RfcLogLevel::ERROR],
+      ],
+      'warning' => [
+        'label' => $this->t('Warnings'),
+        'levels' => [RfcLogLevel::WARNING],
+      ],
+      'notice' => [
+        'label' => $this->t('Notices'),
+        'levels' => [RfcLogLevel::NOTICE, RfcLogLevel::INFO],
+      ],
+    ];
+  }
+
+  /**
+   * Builds the list of log entries.
+   *
+   * @param int[] $levels
+   *   The severity levels to show, or an empty array for every level.
+   *
+   * @return array
+   *   A render array.
+   */
+  protected function buildList(array $levels): array {
+    $query = $this->database->select('watchdog', 'w')
+      ->fields('w', ['wid', 'type', 'message', 'variables', 'severity', 'timestamp'])
+      ->orderBy('wid', 'DESC')
+      ->range(0, self::LIMIT);
+    if ($levels) {
+      $query->condition('severity', $levels, 'IN');
+    }
+    $rows = $query->execute()->fetchAll();
+
+    if (!$rows) {
+      return $this->buildEmpty($this->t('No matching log messages.'));
+    }
+
+    $level_labels = RfcLogLevel::getLevels();
     $items = [];
     foreach ($rows as $row) {
       $level = (int) $row->severity;
@@ -103,7 +200,7 @@ class RecentLogs extends DashboardCardBase {
         'severity' => [
           '#type' => 'html_tag',
           '#tag' => 'span',
-          '#value' => $levels[$level] ?? $level,
+          '#value' => $level_labels[$level] ?? $level,
           '#attributes' => [
             'class' => [
               'htmxdemo-pill',
@@ -131,7 +228,6 @@ class RecentLogs extends DashboardCardBase {
       '#theme' => 'item_list',
       '#items' => $items,
       '#attributes' => ['class' => ['htmxdemo-list', 'htmxdemo-list--logs']],
-      '#cache' => $cache,
     ];
   }
 

@@ -59,5 +59,43 @@
         );
       },
     }));
+
+    /**
+     * A clock that ticks in the browser, started from the server's time.
+     *
+     * Used by the Site status card. htmx re-renders it on every poll, which
+     * re-syncs it with the server.
+     *
+     * @param {number} serverTime
+     *   The server time in milliseconds since the epoch.
+     * @param {string} timeZone
+     *   The IANA timezone to display the time in.
+     */
+    window.Alpine.data('htmxdemoClock', (serverTime, timeZone) => ({
+      time: '',
+      timer: null,
+      offset: serverTime - Date.now(),
+      format: new Intl.DateTimeFormat(undefined, {
+        timeZone,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hourCycle: 'h23',
+      }),
+
+      init() {
+        this.tick();
+        this.timer = setInterval(() => this.tick(), 1000);
+      },
+
+      // Alpine calls this when htmx swaps the card body out.
+      destroy() {
+        clearInterval(this.timer);
+      },
+
+      tick() {
+        this.time = this.format.format(Date.now() + this.offset);
+      },
+    }));
   });
 })(Drupal);

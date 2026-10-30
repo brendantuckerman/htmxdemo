@@ -13,13 +13,17 @@ use Drupal\htmxdemo\Attribute\DashboardCard;
 use Drupal\htmxdemo\DashboardCardBase;
 
 /**
- * Shows the server time and site status, polled by htmx.
+ * Shows the server time and site status.
+ *
+ * htmx polls the server every 30 seconds for fresh status; Alpine ticks the
+ * clock between polls. Polling every second would cost a full Drupal request
+ * each time and flash the card's loading indicator constantly.
  */
 #[DashboardCard(
   id: 'site_status',
   label: new TranslatableMarkup('Site status'),
-  description: new TranslatableMarkup('Server time and cron status, refreshed every 15 seconds.'),
-  poll: '1s',
+  description: new TranslatableMarkup('A live server clock, with status re-synced every 30 seconds.'),
+  poll: '30s',
 )]
 class SiteStatus extends DashboardCardBase {
 
@@ -82,16 +86,29 @@ class SiteStatus extends DashboardCardBase {
       ];
     }
 
+    // Alpine ticks the clock every second in the browser, starting from the
+    // server's time and in the timezone Drupal resolved for this user. Each
+    // htmx poll replaces this markup, which re-syncs the clock, and Alpine
+    // destroys the old component and its timer.
+    $clock = sprintf(
+      'htmxdemoClock(%d, %s)',
+      (int) round($this->time->getCurrentMicroTime() * 1000),
+      json_encode(date_default_timezone_get()),
+    );
+
     return [
       '#type' => 'container',
       '#attributes' => ['class' => ['htmxdemo-status']],
       'time' => [
         '#type' => 'html_tag',
         '#tag' => 'time',
+        // The server-rendered time shows until Alpine takes over.
         '#value' => $this->dateFormatter->format($now, 'custom', 'H:i:s'),
         '#attributes' => [
           'class' => ['htmxdemo-stat__value'],
           'datetime' => $this->dateFormatter->format($now, 'custom', 'c'),
+          'x-data' => $clock,
+          'x-text' => 'time',
         ],
       ],
       'live' => [

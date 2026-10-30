@@ -546,12 +546,55 @@ body.sorting .htmxdemo-card {
   gap: 0.6rem;
 }
 
+/* Each bar is a button that opens its detail panel. */
 .htmxdemo-bars__row {
   display: grid;
   grid-template-columns: minmax(5rem, 30%) 1fr auto;
   gap: 0.75rem;
   align-items: center;
+  width: 100%;
+  margin: 0 -0.5rem;
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  border-radius: var(--hd-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
   font-size: 0.875rem;
+  text-align: start;
+  cursor: pointer;
+  box-sizing: content-box;
+  transition: background-color 150ms;
+}
+
+.htmxdemo-bars__row:hover,
+.htmxdemo-bars__row[aria-expanded="true"] {
+  background: var(--hd-accent-soft);
+}
+
+.htmxdemo-bars__row[aria-expanded="true"] .htmxdemo-bars__label {
+  font-weight: 600;
+}
+
+/* htmx adds .htmx-request to the chart, its hx-indicator, while loading. */
+.htmxdemo-bars.htmx-request .htmxdemo-bars__detail {
+  opacity: 0.5;
+}
+
+.htmxdemo-bars__detail:not(:empty) {
+  margin-block-start: 0.5rem;
+  padding-block-start: 0.75rem;
+  border-block-start: 1px solid var(--hd-border);
+  animation: htmxdemo-card-in 200ms var(--hd-ease) backwards;
+  transition: opacity 150ms;
+}
+
+.htmxdemo-bars__detail h3 {
+  margin: 0 0 0.25rem;
+  color: var(--hd-text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .htmxdemo-bars__label {
@@ -649,6 +692,90 @@ body.sorting .htmxdemo-card {
 
 .htmxdemo-search__results {
   margin-block-start: 0.75rem;
+}
+
+.htmxdemo-button--block {
+  justify-content: center;
+  width: 100%;
+}
+
+.htmxdemo-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* htmx adds .htmx-request to the button that made the request. */
+.htmxdemo-button.htmx-request {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.htmxdemo-more:not(:empty) {
+  margin-block-start: 0.75rem;
+}
+
+/* Items appended by Load more fade in. */
+.htmxdemo-list > li {
+  animation: htmxdemo-card-in 250ms var(--hd-ease) backwards;
+}
+
+.htmxdemo-pager {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-start: 1rem;
+  padding-block-start: 0.75rem;
+  border-block-start: 1px solid var(--hd-border);
+}
+
+.htmxdemo-pager__position {
+  color: var(--hd-text-muted);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.htmxdemo-filter {
+  margin-block-end: 1rem;
+}
+
+.htmxdemo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-block-end: 0.75rem;
+}
+
+.htmxdemo-chip {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--hd-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--hd-text-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+}
+
+.htmxdemo-chip:hover {
+  border-color: var(--hd-accent);
+  color: var(--hd-accent);
+}
+
+.htmxdemo-chip[aria-pressed="true"] {
+  border-color: var(--hd-accent);
+  background: var(--hd-accent);
+  color: var(--hd-accent-text);
+}
+
+.htmxdemo-logs {
+  transition: opacity 150ms;
+}
+
+.htmxdemo-chips:has(.htmx-request) + .htmxdemo-logs {
+  opacity: 0.5;
 }
 
 /* Quick draft wizard ------------------------------------------------------ */

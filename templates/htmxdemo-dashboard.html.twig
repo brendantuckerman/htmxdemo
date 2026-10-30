@@ -26,8 +26,7 @@
 <div{{ attributes }} x-data="htmxdemoDashboard">
   <header class="htmxdemo-dashboard__toolbar">
     <div class="htmxdemo-dashboard__intro">
-      <h2 class="htmxdemo-dashboard__title">{{ 'Your dashboard'|t }}</h2>
-      <p class="htmxdemo-dashboard__lede">{{ 'Add cards, drag them by the handle to reorder, and dismiss the ones you no longer need. The layout is saved as you go.'|t }}</p>
+      <h2 class="htmxdemo-dashboard__title">{{ 'htmx + Alpine.js'|t }}</h2>
     </div>
     <form{{ add_attributes }} @htmx:after:request.self="cardAdded($event)">
       <label for="htmxdemo-dashboard-card-type" class="visually-hidden">{{ 'Card type'|t }}</label>
