@@ -1,0 +1,36 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      alpinejs:
+        specifier: 3.17.5
+        version: 3.17.5
+
+packages:
+
+  '@vue/reactivity@3.5.44':
+    resolution: {integrity: sha512-u+QJdKeBBEADkPdevsL+6E12QlYVfBD8Zcw5qjDQKtamI6l14KyqazJMobhCKelhWN5zpyKUiEDoTyHE93cqWw==}
+
+  '@vue/shared@3.5.44':
+    resolution: {integrity: sha512-H82XLH0DjmSOdbEwO15x3QTo1f5PWEtv237eLpYKc0mqLu+B8hnq16lFWmuBmNurkeiG3wr+oM1FhOll/YVFRg==}
+
+  alpinejs@3.17.5:
+    resolution: {integrity: sha512-XewMqRC6zjy8iaUPn86dxjvooAsNai3hUtQbdn0A5H2w7Jt10xHGZ1SczN5+Dvp3UKkuSEt9moy/UaUWOwKdnQ==}
+
+snapshots:
+
+  '@vue/reactivity@3.5.44':
+    dependencies:
+      '@vue/shared': 3.5.44
+
+  '@vue/shared@3.5.44': {}
+
+  alpinejs@3.17.5:
+    dependencies:
+      '@vue/reactivity': 3.5.44
