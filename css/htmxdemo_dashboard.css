@@ -1,0 +1,841 @@
+/**
+ * @file
+ * Styles for the htmx and Alpine.js dashboard.
+ *
+ * Colours, radii and shadows are custom properties on the dashboard root, so
+ * the dark scheme only redefines the tokens.
+ *
+ * The card copy that follows the pointer while dragging is appended to the
+ * body, outside the dashboard, so it gets the tokens as well.
+ */
+
+/* Tokens ------------------------------------------------------------------ */
+
+.htmxdemo-dashboard,
+.htmxdemo-card.is-dragging {
+  --hd-bg: #f4f5f8;
+  --hd-surface: #ffffff;
+  --hd-surface-raised: #ffffff;
+  --hd-border: #e3e5eb;
+  --hd-text: #1b1d24;
+  --hd-text-muted: #636878;
+  --hd-accent: #4f46e5;
+  --hd-accent-soft: #eef0ff;
+  --hd-accent-text: #ffffff;
+  --hd-success: #0f8a5f;
+  --hd-success-soft: #e3f6ee;
+  --hd-warning: #a45d00;
+  --hd-warning-soft: #fdf1df;
+  --hd-danger: #c0262d;
+  --hd-danger-soft: #fde8e8;
+  --hd-skeleton: #eceef3;
+  --hd-radius: 14px;
+  --hd-radius-sm: 8px;
+  --hd-shadow: 0 1px 2px rgb(20 22 30 / 6%), 0 4px 16px rgb(20 22 30 / 6%);
+  --hd-shadow-lifted: 0 12px 32px rgb(20 22 30 / 18%);
+  --hd-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  color: var(--hd-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+/* The container query establishes layout containment, which also makes the
+   dashboard the containing block for position: fixed descendants. That is
+   why the drag copy must live on the body rather than inside the grid. */
+.htmxdemo-dashboard {
+  position: relative;
+  container: dashboard / inline-size;
+  padding: clamp(1rem, 3vw, 2rem);
+  border-radius: calc(var(--hd-radius) + 6px);
+  background: var(--hd-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  .htmxdemo-dashboard,
+  .htmxdemo-card.is-dragging {
+    --hd-bg: #0f1117;
+    --hd-surface: #181b23;
+    --hd-surface-raised: #1f232d;
+    --hd-border: #2a2f3b;
+    --hd-text: #e8eaf0;
+    --hd-text-muted: #9aa0b0;
+    --hd-accent: #8b85ff;
+    --hd-accent-soft: #25244a;
+    --hd-accent-text: #0f1117;
+    --hd-success: #4fd1a1;
+    --hd-success-soft: #123528;
+    --hd-warning: #f5b454;
+    --hd-warning-soft: #3a2a10;
+    --hd-danger: #ff7b7f;
+    --hd-danger-soft: #3d1618;
+    --hd-skeleton: #252a35;
+    --hd-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 16px rgb(0 0 0 / 25%);
+    --hd-shadow-lifted: 0 12px 32px rgb(0 0 0 / 50%);
+  }
+}
+
+.htmxdemo-dashboard [x-cloak] {
+  display: none !important;
+}
+
+/* Toolbar ----------------------------------------------------------------- */
+
+.htmxdemo-dashboard__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: end;
+  justify-content: space-between;
+  margin-block-end: 1.5rem;
+}
+
+.htmxdemo-dashboard__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.htmxdemo-dashboard__lede {
+  max-width: 46ch;
+  margin: 0.25rem 0 0;
+  color: var(--hd-text-muted);
+}
+
+.htmxdemo-dashboard__add {
+  display: flex;
+  gap: 0.5rem;
+  flex: 0 1 26rem;
+}
+
+.htmxdemo-dashboard__add .htmxdemo-select {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Controls ---------------------------------------------------------------- */
+
+.htmxdemo-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--hd-border);
+  border-radius: var(--hd-radius-sm);
+  background: var(--hd-surface);
+  color: inherit;
+  font: inherit;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.htmxdemo-input:focus {
+  border-color: var(--hd-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--hd-accent-soft);
+}
+
+.htmxdemo-button {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--hd-radius-sm);
+  background: var(--hd-accent);
+  color: var(--hd-accent-text);
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 150ms var(--hd-ease), filter 150ms;
+}
+
+.htmxdemo-button:hover {
+  filter: brightness(1.08);
+}
+
+.htmxdemo-button:active {
+  transform: translateY(1px);
+}
+
+.htmxdemo-button--ghost {
+  border-color: var(--hd-border);
+  background: transparent;
+  color: var(--hd-text);
+}
+
+.htmxdemo-dashboard :focus-visible {
+  outline: 2px solid var(--hd-accent);
+  outline-offset: 2px;
+}
+
+/* Grid -------------------------------------------------------------------- */
+
+.htmxdemo-dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  grid-auto-flow: dense;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* Wide cards only span two columns when there is room for two. */
+@container dashboard (min-width: 40rem) {
+  .htmxdemo-card--wide {
+    grid-column: span 2;
+  }
+}
+
+/* The empty state shows itself whenever the grid has no cards left. */
+.htmxdemo-dashboard__empty {
+  display: none;
+  padding: 3rem 1rem;
+  border: 2px dashed var(--hd-border);
+  border-radius: var(--hd-radius);
+  color: var(--hd-text-muted);
+  text-align: center;
+}
+
+.htmxdemo-dashboard__grid:not(:has(.htmxdemo-card)) + .htmxdemo-dashboard__empty {
+  display: block;
+}
+
+.htmxdemo-dashboard__empty p {
+  margin: 0;
+}
+
+.htmxdemo-dashboard__empty-title {
+  color: var(--hd-text);
+  font-weight: 600;
+}
+
+/* Card -------------------------------------------------------------------- */
+
+.htmxdemo-card {
+  position: relative;
+  container: card / inline-size;
+  overflow: hidden;
+  border: 1px solid var(--hd-border);
+  border-radius: var(--hd-radius);
+  background: var(--hd-surface);
+  box-shadow: var(--hd-shadow);
+  /* Backwards only: a forwards fill would hold the transform and override
+     the inline transforms SortableJS animates with. */
+  animation: htmxdemo-card-in 300ms var(--hd-ease) backwards;
+  transition: opacity 250ms var(--hd-ease), transform 250ms var(--hd-ease), box-shadow 200ms;
+}
+
+@keyframes htmxdemo-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* htmx adds .htmx-swapping during the 250ms swap delay on dismiss. */
+.htmxdemo-card.htmx-swapping {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+/* A thin progress bar while any request for this card is in flight. */
+.htmxdemo-card::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--hd-accent), transparent);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+  content: "";
+  opacity: 0;
+  transition: opacity 150ms;
+}
+
+.htmxdemo-card.htmx-request::after {
+  opacity: 1;
+  animation: htmxdemo-progress 900ms linear infinite;
+}
+
+@keyframes htmxdemo-progress {
+  from {
+    background-position: -50% 0;
+  }
+  to {
+    background-position: 150% 0;
+  }
+}
+
+.htmxdemo-card__header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem 0.75rem 0.75rem 0.5rem;
+  border-block-end: 1px solid var(--hd-border);
+}
+
+.htmxdemo-card.is-collapsed .htmxdemo-card__header {
+  border-block-end-color: transparent;
+}
+
+.htmxdemo-card__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.htmxdemo-card__actions {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.htmxdemo-card__body {
+  padding: 1rem 1.125rem 1.125rem;
+}
+
+.htmxdemo-card__body > :first-child {
+  margin-block-start: 0;
+}
+
+.htmxdemo-card__body > :last-child {
+  margin-block-end: 0;
+}
+
+.htmxdemo-card__empty {
+  margin: 0;
+  color: var(--hd-text-muted);
+}
+
+/* Icon buttons ------------------------------------------------------------ */
+
+.htmxdemo-card__handle,
+.htmxdemo-icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--hd-radius-sm);
+  background: transparent;
+  color: var(--hd-text-muted);
+  cursor: pointer;
+  transition: background-color 150ms, color 150ms;
+}
+
+.htmxdemo-card__handle:hover,
+.htmxdemo-icon-button:hover {
+  background: var(--hd-accent-soft);
+  color: var(--hd-accent);
+}
+
+.htmxdemo-icon-button--dismiss:hover {
+  background: var(--hd-danger-soft);
+  color: var(--hd-danger);
+}
+
+.htmxdemo-card__handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.htmxdemo-card__handle::before,
+.htmxdemo-icon-button::before {
+  width: 1.1rem;
+  height: 1.1rem;
+  background: currentColor;
+  content: "";
+  mask: var(--hd-icon) center / contain no-repeat;
+  transition: transform 200ms var(--hd-ease);
+}
+
+.htmxdemo-card__handle {
+  --hd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='9' cy='5' r='1.6'/%3E%3Ccircle cx='15' cy='5' r='1.6'/%3E%3Ccircle cx='9' cy='12' r='1.6'/%3E%3Ccircle cx='15' cy='12' r='1.6'/%3E%3Ccircle cx='9' cy='19' r='1.6'/%3E%3Ccircle cx='15' cy='19' r='1.6'/%3E%3C/svg%3E");
+}
+
+.htmxdemo-icon-button--refresh {
+  --hd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12a9 9 0 1 1-2.64-6.36'/%3E%3Cpath d='M21 3v6h-6'/%3E%3C/svg%3E");
+}
+
+.htmxdemo-icon-button--collapse {
+  --hd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 15 6-6 6 6'/%3E%3C/svg%3E");
+}
+
+.htmxdemo-icon-button--dismiss {
+  --hd-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E");
+}
+
+.htmxdemo-card.is-collapsed .htmxdemo-icon-button--collapse::before {
+  transform: rotate(180deg);
+}
+
+.htmxdemo-card.htmx-request .htmxdemo-icon-button--refresh::before {
+  animation: htmxdemo-spin 700ms linear infinite;
+}
+
+@keyframes htmxdemo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dragging (classes set through x-sort:config) ----------------------------- */
+
+.htmxdemo-card.is-chosen {
+  box-shadow: var(--hd-shadow-lifted);
+}
+
+/* The copy of the card that follows the pointer. SortableJS moves it with an
+   inline transform on every pointer move, so any transition makes it trail
+   behind the cursor. */
+.htmxdemo-card.is-dragging {
+  opacity: 0.95 !important;
+  box-shadow: var(--hd-shadow-lifted);
+  animation: none;
+  transition: none !important;
+}
+
+/* The placeholder left where the card will drop. */
+.htmxdemo-card.is-ghost {
+  border: 2px dashed var(--hd-accent);
+  background: var(--hd-accent-soft);
+  box-shadow: none;
+}
+
+.htmxdemo-card.is-ghost > * {
+  visibility: hidden;
+}
+
+/* The Alpine sort plugin adds .sorting to the body while dragging. */
+body.sorting,
+body.sorting .htmxdemo-card__handle {
+  cursor: grabbing;
+}
+
+body.sorting .htmxdemo-card {
+  user-select: none;
+}
+
+/* Skeleton ---------------------------------------------------------------- */
+
+.htmxdemo-skeleton {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.htmxdemo-skeleton span {
+  height: 0.85rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--hd-skeleton) 25%, var(--hd-surface-raised) 50%, var(--hd-skeleton) 75%);
+  background-size: 200% 100%;
+  animation: htmxdemo-shimmer 1.2s ease-in-out infinite;
+}
+
+.htmxdemo-skeleton span:nth-child(1) {
+  width: 60%;
+  height: 1.6rem;
+}
+
+.htmxdemo-skeleton span:nth-child(3) {
+  width: 80%;
+}
+
+@keyframes htmxdemo-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Card content ------------------------------------------------------------ */
+
+.htmxdemo-list {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.htmxdemo-list > li {
+  margin: 0;
+  padding: 0.5rem 0;
+  border-block-end: 1px solid var(--hd-border);
+}
+
+.htmxdemo-list > li:last-child {
+  border-block-end: 0;
+}
+
+.htmxdemo-list--compact > li {
+  padding: 0.35rem 0;
+}
+
+.htmxdemo-card a {
+  color: var(--hd-accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.htmxdemo-card a:hover {
+  text-decoration: underline;
+}
+
+.htmxdemo-list__item {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.htmxdemo-list__meta {
+  color: var(--hd-text-muted);
+  font-size: 0.8rem;
+}
+
+.htmxdemo-stat__value {
+  margin: 0;
+  font-size: clamp(2rem, 12cqi, 3rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.htmxdemo-stat__label {
+  margin: 0.25rem 0 0;
+  color: var(--hd-text-muted);
+}
+
+.htmxdemo-stat__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-block-start: 1rem;
+}
+
+.htmxdemo-pill {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--hd-skeleton);
+  color: var(--hd-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.htmxdemo-pill--success {
+  background: var(--hd-success-soft);
+  color: var(--hd-success);
+}
+
+.htmxdemo-pill--warning {
+  background: var(--hd-warning-soft);
+  color: var(--hd-warning);
+}
+
+.htmxdemo-pill--danger {
+  background: var(--hd-danger-soft);
+  color: var(--hd-danger);
+}
+
+.htmxdemo-bars {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.htmxdemo-bars__row {
+  display: grid;
+  grid-template-columns: minmax(5rem, 30%) 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.htmxdemo-bars__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.htmxdemo-bars__bar {
+  height: 0.6rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--hd-accent) var(--share), var(--hd-skeleton) var(--share));
+}
+
+.htmxdemo-bars__count {
+  color: var(--hd-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.htmxdemo-random__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.htmxdemo-random .htmxdemo-button {
+  margin-block-start: 1rem;
+}
+
+.htmxdemo-teaser h2 {
+  margin-block: 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.htmxdemo-teaser img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--hd-radius-sm);
+}
+
+.htmxdemo-live::before {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-inline-end: 0.4rem;
+  border-radius: 50%;
+  background: var(--hd-success);
+  content: "";
+  animation: htmxdemo-pulse 2s ease-in-out infinite;
+}
+
+@keyframes htmxdemo-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.htmxdemo-details {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1rem 0 0;
+  font-size: 0.875rem;
+}
+
+.htmxdemo-details__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.htmxdemo-details dt {
+  color: var(--hd-text-muted);
+}
+
+.htmxdemo-details dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.htmxdemo-log {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.1rem 0.6rem;
+  align-items: baseline;
+}
+
+.htmxdemo-log .htmxdemo-list__meta {
+  grid-column: 2;
+}
+
+.htmxdemo-log__message {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.htmxdemo-search__results {
+  margin-block-start: 0.75rem;
+}
+
+/* Quick draft wizard ------------------------------------------------------ */
+
+.htmxdemo-wizard {
+  transition: opacity 150ms;
+}
+
+.htmxdemo-wizard.htmx-request {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.htmxdemo-steps {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.htmxdemo-steps__step {
+  display: flex;
+  flex: 1;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0;
+  color: var(--hd-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  counter-increment: step;
+}
+
+.htmxdemo-steps__step::before {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 2px solid var(--hd-border);
+  border-radius: 50%;
+  content: counter(step);
+  transition: background-color 200ms, border-color 200ms;
+}
+
+.htmxdemo-steps__step:not(:last-child)::after {
+  flex: 1;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--hd-border);
+  content: "";
+}
+
+.htmxdemo-steps__step.is-current {
+  color: var(--hd-text);
+}
+
+.htmxdemo-steps__step.is-current::before {
+  border-color: var(--hd-accent);
+  color: var(--hd-accent);
+}
+
+.htmxdemo-steps__step.is-done::before {
+  border-color: var(--hd-accent);
+  background: var(--hd-accent);
+  color: var(--hd-accent-text);
+  content: "✓";
+}
+
+.htmxdemo-steps__step.is-done::after {
+  background: var(--hd-accent);
+}
+
+.htmxdemo-wizard .form-item {
+  margin: 0 0 1rem;
+}
+
+.htmxdemo-wizard label {
+  display: block;
+  margin-block-end: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.htmxdemo-wizard input[type="text"],
+.htmxdemo-wizard textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--hd-border);
+  border-radius: var(--hd-radius-sm);
+  background: var(--hd-surface);
+  color: inherit;
+  font: inherit;
+}
+
+.htmxdemo-wizard input[type="text"]:focus,
+.htmxdemo-wizard textarea:focus {
+  border-color: var(--hd-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--hd-accent-soft);
+}
+
+.htmxdemo-wizard .form-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin: 0;
+}
+
+.htmxdemo-wizard .form-actions .button,
+.htmxdemo-wizard .form-actions input[type="submit"] {
+  margin: 0;
+  padding: 0.55rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--hd-radius-sm);
+  background: var(--hd-accent);
+  color: var(--hd-accent-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.htmxdemo-wizard .form-actions .htmxdemo-button--ghost {
+  border-color: var(--hd-border);
+  background: transparent;
+  color: var(--hd-text);
+}
+
+.htmxdemo-review {
+  padding: 1rem;
+  margin-block-end: 1rem;
+  border-radius: var(--hd-radius-sm);
+  background: var(--hd-bg);
+}
+
+.htmxdemo-review h3 {
+  margin: 0 0 0.5rem;
+}
+
+.htmxdemo-review p {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.htmxdemo-review .htmxdemo-review__note {
+  margin-block-start: 0.75rem;
+  color: var(--hd-text-muted);
+  font-size: 0.8rem;
+}
+
+.htmxdemo-wizard__result {
+  display: inline-block;
+  margin-block-end: 1rem;
+}
+
+/* Status messages travel inside the swapped form. */
+.htmxdemo-wizard [data-drupal-messages] {
+  margin-block-end: 1rem;
+}
+
+/* Toast ------------------------------------------------------------------- */
+
+.htmxdemo-toast {
+  position: fixed;
+  z-index: 100;
+  inset-block-end: 1.5rem;
+  inset-inline-start: 50%;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: var(--hd-text);
+  color: var(--hd-bg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: var(--hd-shadow-lifted);
+  transform: translateX(-50%);
+}
+
+/* Motion ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .htmxdemo-dashboard *,
+  .htmxdemo-dashboard *::before,
+  .htmxdemo-dashboard *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

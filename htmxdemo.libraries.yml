@@ -22,3 +22,37 @@ alpine:
       minified: true
       attributes:
         defer: true
+
+alpine_sort:
+  version: 3.17.5
+  license:
+    name: MIT
+    url: https://github.com/alpinejs/alpine/blob/main/LICENSE.md
+    gpl-compatible: true
+  # Deliberately not deferred, see dashboard_alpine below.
+  js:
+    assets/vendor/alpinejs-sort/cdn.min.js:
+      minified: true
+
+# Registers the Alpine component on Alpine's alpine:init event.
+#
+# Alpine core is deferred and starts as soon as it runs, so anything that
+# listens for alpine:init must run first. Deferred scripts run in document
+# order, which other libraries on the page can change: a block attaching
+# htmxdemo/alpine puts Alpine ahead of these files. Scripts without defer run
+# while the page is parsed, before any deferred script, so they always win.
+dashboard_alpine:
+  js:
+    js/htmxdemo_dashboard.js: {}
+  dependencies:
+    - core/drupal
+    - htmxdemo/alpine_sort
+
+dashboard:
+  css:
+    theme:
+      css/htmxdemo_dashboard.css: {}
+  dependencies:
+    - core/drupal.htmx
+    - htmxdemo/dashboard_alpine
+    - htmxdemo/alpine

@@ -3,3 +3,6 @@ type: module
 description: "A demo of htmx in Drupal"
 package: Other
 core_version_requirement: "^10.2 || ^11 || ^12"
+dependencies:
+  - drupal:filter
+  - drupal:node

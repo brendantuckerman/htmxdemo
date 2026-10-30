@@ -35,5 +35,25 @@ function htmxdemo_theme(): array {
         'total' => NULL,
       ],
     ],
+    'htmxdemo_dashboard' => [
+      'variables' => [
+        'cards' => [],
+        'card_type_select' => [],
+        'attributes' => NULL,
+        'add_attributes' => NULL,
+        'grid_attributes' => NULL,
+      ],
+    ],
+    'htmxdemo_dashboard_card' => [
+      'variables' => [
+        'uuid' => '',
+        'label' => '',
+        'description' => '',
+        'attributes' => NULL,
+        'body_attributes' => NULL,
+        'refresh_attributes' => NULL,
+        'dismiss_attributes' => NULL,
+      ],
+    ],
   ];
 }

@@ -68,3 +68,10 @@ htmxdemo_form_checkbox:
   description: "A htmx driven form uing partials in htmx 4"
   route_name: htmxdemo.form_checkboxes
   weight: 10
+
+htmxdemo_dashboard:
+  title: "Htmx and Alpine dashboard"
+  parent: htmxdemo_links
+  description: "A dashboard of draggable cards, loaded and managed with htmx"
+  route_name: htmxdemo.dashboard
+  weight: 11

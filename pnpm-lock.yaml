@@ -8,11 +8,17 @@ importers:
 
   .:
     dependencies:
+      '@alpinejs/sort':
+        specifier: 3.17.5
+        version: 3.17.5
       alpinejs:
         specifier: 3.17.5
         version: 3.17.5
 
 packages:
+
+  '@alpinejs/sort@3.17.5':
+    resolution: {integrity: sha512-YwfNQ5fWTNwab2cEV9fvw5OSYz0bq6HvYVgi3dqIDIr8qw6/T0CqxKcA/K6owgYEuROaEqkJaUaoajEdL2tZKg==}
 
   '@vue/reactivity@3.5.44':
     resolution: {integrity: sha512-u+QJdKeBBEADkPdevsL+6E12QlYVfBD8Zcw5qjDQKtamI6l14KyqazJMobhCKelhWN5zpyKUiEDoTyHE93cqWw==}
@@ -23,7 +29,14 @@ packages:
   alpinejs@3.17.5:
     resolution: {integrity: sha512-XewMqRC6zjy8iaUPn86dxjvooAsNai3hUtQbdn0A5H2w7Jt10xHGZ1SczN5+Dvp3UKkuSEt9moy/UaUWOwKdnQ==}
 
+  sortablejs@1.15.7:
+    resolution: {integrity: sha512-Kk8wLQPlS+yi1ZEf48a4+fzHa4yxjC30M/Sr2AnQu+f/MPwvvX9XjZ6OWejiz8crBsLwSq8GHqaxaET7u6ux0A==}
+
 snapshots:
+
+  '@alpinejs/sort@3.17.5':
+    dependencies:
+      sortablejs: 1.15.7
 
   '@vue/reactivity@3.5.44':
     dependencies:
@@ -34,3 +47,5 @@ snapshots:
   alpinejs@3.17.5:
     dependencies:
       '@vue/reactivity': 3.5.44
+
+  sortablejs@1.15.7: {}

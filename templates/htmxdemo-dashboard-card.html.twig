@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * The shell of a dashboard card. Its body is loaded by htmx.
+ *
+ * Available variables:
+ * - uuid: The card instance UUID.
+ * - label: The card label.
+ * - description: The card description.
+ * - attributes: Attributes for the card element.
+ * - body_attributes: htmx attributes that load the card body.
+ * - refresh_attributes: htmx attributes for the refresh button.
+ * - dismiss_attributes: htmx attributes for the dismiss button, including
+ *   hx-confirm.
+ *
+ * Alpine.js keeps the collapsed state; it never needs the server.
+ */
+#}
+<article{{ attributes }} x-data="{ collapsed: false }" :class="{ 'is-collapsed': collapsed }">
+  {# Read in DOM order when the grid saves a new order. #}
+  <input type="hidden" name="order[]" value="{{ uuid }}">
+  <header class="htmxdemo-card__header">
+    <button type="button" class="htmxdemo-card__handle" title="{{ 'Drag to reorder'|t }}">
+      <span class="visually-hidden">{{ 'Drag to reorder'|t }}</span>
+    </button>
+    <h3 class="htmxdemo-card__title" title="{{ description }}">{{ label }}</h3>
+    <div class="htmxdemo-card__actions">
+      <button type="button"{{ refresh_attributes.addClass('htmxdemo-icon-button', 'htmxdemo-icon-button--refresh') }} title="{{ 'Refresh'|t }}">
+        <span class="visually-hidden">{{ 'Refresh @label'|t({'@label': label}) }}</span>
+      </button>
+      <button type="button" class="htmxdemo-icon-button htmxdemo-icon-button--collapse" title="{{ 'Collapse'|t }}"
+        @click="collapsed = !collapsed" :aria-expanded="(!collapsed).toString()" aria-controls="{{ body_attributes.id }}">
+        <span class="visually-hidden">{{ 'Collapse @label'|t({'@label': label}) }}</span>
+      </button>
+      <button type="button"{{ dismiss_attributes.addClass('htmxdemo-icon-button', 'htmxdemo-icon-button--dismiss') }} title="{{ 'Dismiss'|t }}">
+        <span class="visually-hidden">{{ 'Dismiss @label'|t({'@label': label}) }}</span>
+      </button>
+    </div>
+  </header>
+  <div{{ body_attributes }} x-show="!collapsed" x-transition.opacity>
+    <div class="htmxdemo-skeleton" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</article>

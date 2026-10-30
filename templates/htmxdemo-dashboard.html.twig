@@ -1,0 +1,54 @@
+{#
+/**
+ * @file
+ * The htmx and Alpine.js dashboard.
+ *
+ * Available variables:
+ * - cards: The card shells, in layout order.
+ * - card_type_select: The select listing the card types that can be added.
+ * - attributes: Attributes for the dashboard root, including the inherited
+ *   hx-headers that carry the CSRF token.
+ * - add_attributes: htmx attributes for the add card form.
+ * - grid_attributes: htmx attributes for the grid, which saves the order.
+ *
+ * Alpine.js:
+ * - x-data="htmxdemoDashboard" holds the toast state, see
+ *   js/htmxdemo_dashboard.js.
+ * - x-sort on the grid makes the cards draggable by their handles. When a
+ *   drag ends it dispatches 'dashboard-sorted', the htmx trigger that saves
+ *   the new order. The .ghost modifier keeps the drop placeholder visible.
+ *   forceFallback uses pointer events rather than native drag and drop, as
+ *   Firefox will not start a native drag from a button. fallbackOnBody puts
+ *   the dragged copy on the body, outside the dashboard's container query
+ *   containment, so its position: fixed is relative to the viewport.
+ */
+#}
+<div{{ attributes }} x-data="htmxdemoDashboard">
+  <header class="htmxdemo-dashboard__toolbar">
+    <div class="htmxdemo-dashboard__intro">
+      <h2 class="htmxdemo-dashboard__title">{{ 'Your dashboard'|t }}</h2>
+      <p class="htmxdemo-dashboard__lede">{{ 'Add cards, drag them by the handle to reorder, and dismiss the ones you no longer need. The layout is saved as you go.'|t }}</p>
+    </div>
+    <form{{ add_attributes }} @htmx:after:request.self="cardAdded($event)">
+      <label for="htmxdemo-dashboard-card-type" class="visually-hidden">{{ 'Card type'|t }}</label>
+      {{ card_type_select }}
+      <button type="submit" class="htmxdemo-button">
+        <span aria-hidden="true">+</span> {{ 'Add card'|t }}
+      </button>
+    </form>
+  </header>
+
+  <div{{ grid_attributes }}
+    x-sort.ghost="$dispatch('dashboard-sorted')"
+    x-sort:config="{ handle: '.htmxdemo-card__handle', forceFallback: true, fallbackOnBody: true, fallbackClass: 'is-dragging', ghostClass: 'is-ghost', chosenClass: 'is-chosen', animation: 200 }"
+    @htmx:after:request.self="layoutSaved($event)">
+    {{ cards }}
+  </div>
+
+  <div class="htmxdemo-dashboard__empty">
+    <p class="htmxdemo-dashboard__empty-title">{{ 'Your dashboard is empty'|t }}</p>
+    <p>{{ 'Choose a card above to get started.'|t }}</p>
+  </div>
+
+  <div class="htmxdemo-toast" role="status" x-show="toast" x-transition.opacity.duration.200ms x-text="toast" x-cloak></div>
+</div>

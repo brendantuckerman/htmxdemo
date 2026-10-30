@@ -163,3 +163,63 @@ htmxdemo.wizard:
     _permission: "access content"
   options:
     _htmx_route: TRUE
+
+htmxdemo.dashboard:
+  path: "/htmxdemo/dashboard"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoDashboardController::page'
+    _title: "Htmx and Alpine dashboard"
+  methods: [GET]
+  requirements:
+    _permission: "access content"
+  options:
+    no_cache: TRUE
+
+htmxdemo.dashboard.card_add:
+  path: "/htmxdemo/dashboard/card"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoDashboardController::addCard'
+  methods: [POST]
+  requirements:
+    _permission: "access content"
+    _csrf_request_header_token: "TRUE"
+  options:
+    _htmx_route: TRUE
+    no_cache: TRUE
+
+htmxdemo.dashboard.card_body:
+  path: "/htmxdemo/dashboard/card/{uuid}"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoDashboardController::cardBody'
+  # POST lets forms inside a card submit back to the card.
+  methods: [GET, POST]
+  requirements:
+    _permission: "access content"
+    uuid: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+  options:
+    _htmx_route: TRUE
+    no_cache: TRUE
+
+htmxdemo.dashboard.card_delete:
+  path: "/htmxdemo/dashboard/card/{uuid}"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoDashboardController::deleteCard'
+  methods: [DELETE]
+  requirements:
+    _permission: "access content"
+    _csrf_request_header_token: "TRUE"
+    uuid: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+  options:
+    _htmx_route: TRUE
+    no_cache: TRUE
+
+htmxdemo.dashboard.sort:
+  path: "/htmxdemo/dashboard/sort"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoDashboardController::sort'
+  methods: [POST]
+  requirements:
+    _permission: "access content"
+    _csrf_request_header_token: "TRUE"
+  options:
+    no_cache: TRUE

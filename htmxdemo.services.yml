@@ -2,3 +2,11 @@ services:
   htmxdemo.shipping_calculator:
     class: Drupal\htmxdemo\HtmxdemoShippingCalculator
   Drupal\htmxdemo\HtmxdemoShippingCalculatorInterface: "@htmxdemo.shipping_calculator"
+  plugin.manager.htmxdemo_dashboard_card:
+    class: Drupal\htmxdemo\DashboardCardManager
+    parent: default_plugin_manager
+  Drupal\htmxdemo\DashboardCardManager: "@plugin.manager.htmxdemo_dashboard_card"
+  htmxdemo.dashboard_layout_storage:
+    class: Drupal\htmxdemo\DashboardLayoutStorage
+    autowire: true
+  Drupal\htmxdemo\DashboardLayoutStorage: "@htmxdemo.dashboard_layout_storage"
