@@ -55,5 +55,28 @@ function htmxdemo_theme(): array {
         'dismiss_attributes' => NULL,
       ],
     ],
+    'htmxdemo_boost' => [
+      'variables' => [
+        'cards' => [],
+        'page' => 1,
+        'page_count' => 1,
+        'previous_url' => NULL,
+        'next_url' => NULL,
+      ],
+    ],
+    'htmxdemo_boost_card' => [
+      'variables' => [
+        'title' => '',
+        'url' => NULL,
+        'image' => [],
+        'summary' => [],
+      ],
+    ],
+    // Page template for the boost route. Modules don't get automatic template
+    // suggestion discovery, so the suggestion must be registered here.
+    'page__htmxdemo_boost' => [
+      'template' => 'page--htmxdemo-boost',
+      'base hook' => 'page',
+    ],
   ];
 }

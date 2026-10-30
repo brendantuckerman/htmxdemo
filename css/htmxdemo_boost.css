@@ -1,0 +1,60 @@
+.htmxdemo-boost {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.htmxdemo-boost__grid {
+  display: grid;
+  gap: 4rem;
+}
+
+.htmxdemo-boost__card {
+  min-height: 24rem;
+}
+
+.htmxdemo-boost__card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Grey shimmer while the card is waiting to load. */
+.htmxdemo-boost__card--placeholder {
+  border-radius: 0.5rem;
+  background: linear-gradient(90deg, #eee 25%, #f6f6f6 50%, #eee 75%);
+  background-size: 200% 100%;
+  animation: htmxdemo-boost-shimmer 1.5s linear infinite;
+}
+
+/* The card draws in as soon as it is added to the page. */
+.htmxdemo-boost__card--loaded {
+  animation: htmxdemo-boost-draw-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.htmxdemo-boost__pager {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+@keyframes htmxdemo-boost-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes htmxdemo-boost-draw-in {
+  from {
+    opacity: 0;
+    transform: translateY(4rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .htmxdemo-boost__card--placeholder,
+  .htmxdemo-boost__card--loaded {
+    animation: none;
+  }
+}

@@ -223,3 +223,27 @@ htmxdemo.dashboard.sort:
     _csrf_request_header_token: "TRUE"
   options:
     no_cache: TRUE
+
+htmxdemo.boost:
+  path: "/htmxdemo/boost/{page}"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoBoostController::action'
+    _title: "Boost & Dynamic content"
+    page: 1
+  requirements:
+    _permission: "access content"
+    page: '\d+'
+
+htmxdemo.boost_card:
+  path: "/htmxdemo/boost/card/{node}"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoBoostController::card'
+  requirements:
+    _entity_access: "node.view"
+  options:
+    _htmx_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+        bundle:
+          - article

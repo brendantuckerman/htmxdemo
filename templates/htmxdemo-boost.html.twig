@@ -1,0 +1,39 @@
+{#
+/**
+ * @file
+ * One page of scroll-loaded article cards with boosted page links.
+ *
+ * htmx 4 does not inherit attributes by default, so the boost settings on
+ * the nav use the :inherited suffix to apply to the links inside it. A
+ * boosted link fetches the full page, takes #htmxdemo-boost from it and swaps
+ * it in for the current one. The URL is pushed to history.
+ *
+ * Available variables:
+ * - cards: Placeholder elements, each loading an article card on scroll.
+ * - page: The current page number.
+ * - page_count: The total number of pages.
+ * - previous_url: The previous page URL, or NULL on the first page.
+ * - next_url: The next page URL, or NULL on the last page.
+ */
+#}
+<div id="htmxdemo-boost" class="htmxdemo-boost">
+  <p class="htmxdemo-boost__intro">{{ 'Cards load as they scroll into view.'|t }}</p>
+
+  <div class="htmxdemo-boost__grid">
+    {{ cards }}
+  </div>
+
+  <nav class="htmxdemo-boost__pager" aria-label="{{ 'Article pages'|t }}"
+    data-hx-boost:inherited="true"
+    data-hx-target:inherited="#htmxdemo-boost"
+    data-hx-select:inherited="#htmxdemo-boost"
+    data-hx-swap:inherited="outerHTML show:top showTarget:body">
+    {% if previous_url %}
+      <a href="{{ previous_url }}" rel="prev">{{ 'Previous'|t }}</a>
+    {% endif %}
+    <span>{{ 'Page @page of @count'|t({'@page': page, '@count': page_count}) }}</span>
+    {% if next_url %}
+      <a href="{{ next_url }}" rel="next">{{ 'Next'|t }}</a>
+    {% endif %}
+  </nav>
+</div>

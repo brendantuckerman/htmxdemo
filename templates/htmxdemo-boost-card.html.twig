@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * An article card, swapped in over its scroll placeholder.
+ *
+ * Available variables:
+ * - title: The article title.
+ * - url: The article URL.
+ * - image: The rendered main image.
+ * - summary: The rendered, trimmed body.
+ */
+#}
+<article class="htmxdemo-boost__card htmxdemo-boost__card--loaded">
+  {{ image }}
+  <h2><a href="{{ url }}">{{ title }}</a></h2>
+  {{ summary }}
+</article>

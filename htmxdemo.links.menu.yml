@@ -69,9 +69,16 @@ htmxdemo_form_checkbox:
   route_name: htmxdemo.form_checkboxes
   weight: 10
 
+htmxdemo_boost:
+  title: "Boost & Dynamic content"
+  parent: htmxdemo_links
+  description: "On scroll dynamic content loading"
+  route_name: htmxdemo.boost
+  weight: 11
+
 htmxdemo_dashboard:
   title: "Htmx and Alpine dashboard"
   parent: htmxdemo_links
   description: "A dashboard of draggable cards, loaded and managed with htmx"
   route_name: htmxdemo.dashboard
-  weight: 11
+  weight: 12

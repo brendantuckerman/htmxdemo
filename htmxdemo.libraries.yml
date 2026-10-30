@@ -10,6 +10,12 @@ tabs:
   css:
     theme:
       css/htmxdemo_tabs.css: {}
+boost:
+  css:
+    theme:
+      css/htmxdemo_boost.css: {}
+  dependencies:
+    - core/drupal.htmx
 
 alpine:
   version: 3.17.5
