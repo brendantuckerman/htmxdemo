@@ -10,3 +10,15 @@ tabs:
   css:
     theme:
       css/htmxdemo_tabs.css: {}
+
+alpine:
+  version: 3.17.5
+  license:
+    name: MIT
+    url: https://github.com/alpinejs/alpine/blob/main/LICENSE.md
+    gpl-compatible: true
+  js:
+    assets/vendor/alpinejs/cdn.min.js:
+      minified: true
+      attributes:
+        defer: true
