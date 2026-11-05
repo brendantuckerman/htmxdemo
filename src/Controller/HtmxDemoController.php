@@ -96,7 +96,6 @@ class HtmxDemoController extends ControllerBase {
         'contexts' => ['url.query_args:postcode'],
       ]
 
-
     ];
   }
 
