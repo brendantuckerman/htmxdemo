@@ -57,13 +57,23 @@ htmxdemo.form_add_more:
   requirements:
     _permission: "access content"
 
-htmxdemo.form_checkboxes:
-  path: "/htmxform/checkboxform"
+htmxdemo.partials:
+  path: "/htmxdemo/partials"
   defaults:
-    _title: "Checkbox form"
-    _form: '\Drupal\htmxdemo\Form\HtmxdemoCheckboxForm'
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoPartialsController::page'
+    _title: "One response, several targets with hx-partial"
   requirements:
     _permission: "access content"
+
+htmxdemo.partials_roll:
+  path: "/htmxdemo/partials/roll"
+  defaults:
+    _controller: '\Drupal\htmxdemo\Controller\HtmxdemoPartialsController::roll'
+  requirements:
+    _permission: "access content"
+  options:
+    _htmx_route: TRUE
+    no_cache: TRUE
 
 htmxdemo.infinite_scroll:
   path: "/htmxdemo/infinite-scroll"

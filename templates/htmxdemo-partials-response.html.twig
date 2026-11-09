@@ -1,0 +1,8 @@
+
+{% set partials -%}
+<hx-partial hx-target="#roll-latest" hx-swap="innerHTML">{{ roll }}</hx-partial>
+<hx-partial hx-target="#roll-history" hx-swap="beforeend"><li>{{ roll }}</li></hx-partial>
+{%- endset %}
+{{ partials }}
+
+<hx-partial hx-target="#roll-source" hx-swap="innerHTML">{{ partials|e }}</hx-partial>

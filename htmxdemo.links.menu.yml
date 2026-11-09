@@ -62,11 +62,11 @@ htmxdemo_tabbed:
   route_name: htmxdemo.tabbed
   weight: 9
 
-htmxdemo_form_checkbox:
-  title: "Htmxdemo checkbox form with hx-partials"
+htmxdemo_partials:
+  title: "Htmxdemo dice roll with hx-partials"
   parent: htmxdemo_links
-  description: "A htmx driven form uing partials in htmx 4"
-  route_name: htmxdemo.form_checkboxes
+  description: "One htmx 4 response updating several targets with partials"
+  route_name: htmxdemo.partials
   weight: 10
 
 htmxdemo_boost:

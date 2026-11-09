@@ -1,0 +1,12 @@
+{{ attach_library('core/drupal.htmx') }}
+
+<button data-hx-get="{{ path('htmxdemo.partials_roll') }}" data-hx-swap="none">Roll the dice</button>
+
+<h3>Latest roll</h3>
+<p><output id="roll-latest">-</output></p>
+
+<h3>History</h3>
+<ol id="roll-history"></ol>
+
+<h3>Response</h3>
+<pre id="roll-source"></pre>

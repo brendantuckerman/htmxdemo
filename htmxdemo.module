@@ -63,6 +63,14 @@ function htmxdemo_theme(): array {
         'links' => [],
       ],
     ],
+    'htmxdemo_partials' => [
+      'variables' => [],
+    ],
+    'htmxdemo_partials_response' => [
+      'variables' => [
+        'roll' => NULL,
+      ],
+    ],
     'htmxdemo_scroll' => [
       'variables' => [
         'feed' => [],

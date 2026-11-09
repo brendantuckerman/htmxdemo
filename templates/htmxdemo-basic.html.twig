@@ -1,7 +1,7 @@
 {{ attach_library('core/drupal.htmx')}}
 {{ attach_library('htmxdemo/alpine') }}
 <button
-    data-hx-get="/htmxdemo/basic/response"
+    data-hx-get="{{ path('htmxdemo.basic_response') }}"
     data-hx-trigger="click"
     data-hx-target="#htmx-basic-target"
     data-hx-swap="innerHTML"
