@@ -25,7 +25,9 @@ use Symfony\Component\HttpFoundation\Response;
  * - Alpine.js handles client-only state: dragging and collapsing cards.
  *
  * Alpine reports a finished drag by dispatching a 'dashboard-sorted' event,
- * which htmx uses as the trigger for saving the new order.
+ * which htmx uses as the trigger for saving the new order. Shift+Cmd+S saves
+ * it too, through an hx-on that catches the keydown as it bubbles up to the
+ * document.
  */
 class HtmxdemoDashboardController extends ControllerBase {
 
@@ -107,8 +109,20 @@ class HtmxdemoDashboardController extends ControllerBase {
     // Every htmx request inside the dashboard inherits this header, which
     // the _csrf_request_header_token route requirement checks. Core's REST
     // module protects cookie sessions in the same way.
+    //
+    // Shift+Cmd+S (Shift+Ctrl+S elsewhere) also saves the layout. Redundant,
+    // as every drag already saves, but it shows events bubbling: the keydown
+    // fires on whatever has focus and bubbles up to the document, where the
+    // hx-on listens through from:document. The handler stops the browser's
+    // own save dialog, then fires 'dashboard-save' on the grid, which the
+    // grid's hx-trigger turns into the same POST that a drag makes. code is
+    // used rather than key, as key can be 's' or 'S' while Cmd is held.
     $this->applyHtmx($build, '#attributes', (new Htmx())
-      ->headers(['X-CSRF-Token' => $this->csrfToken->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY)], Htmx::INHERITED));
+      ->headers(['X-CSRF-Token' => $this->csrfToken->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY)], Htmx::INHERITED)
+      ->on([
+        "keydown[(metaKey || ctrlKey) && shiftKey && code == 'KeyS' && !repeat] from:document" =>
+        "event.preventDefault(); htmx.trigger('#" . self::GRID_ID . "', 'dashboard-save')",
+      ]));
 
     // Adding a card appends the returned card shell to the grid.
     $this->applyHtmx($build, '#add_attributes', (new Htmx())
@@ -116,12 +130,13 @@ class HtmxdemoDashboardController extends ControllerBase {
       ->target('#' . self::GRID_ID)
       ->swap('beforeend'));
 
-    // Alpine dispatches 'dashboard-sorted' from the grid after a drag. A POST
-    // from a non-form element sends the inputs inside it, which includes the
-    // hidden order[] input in every card, in their new order.
+    // Alpine dispatches 'dashboard-sorted' from the grid after a drag, and the
+    // save shortcut dispatches 'dashboard-save'. A POST from a non-form
+    // element sends the inputs inside it, which includes the hidden order[]
+    // input in every card, in their new order.
     $this->applyHtmx($build, '#grid_attributes', (new Htmx())
       ->post(Url::fromRoute('htmxdemo.dashboard.sort'))
-      ->trigger('dashboard-sorted')
+      ->trigger('dashboard-sorted, dashboard-save')
       ->swap('none'));
 
     return $build;
